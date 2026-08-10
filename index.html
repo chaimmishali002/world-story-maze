@@ -126,6 +126,10 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
 .tag.open{background:#FDECEA;color:#B33F17}
 .empty{padding:26px;text-align:center;color:#7488A8;font-size:14px}
 
+.video{position:relative;padding-top:56.25%;border-radius:18px;overflow:hidden;margin:4px 0 14px;background:#0B2547}
+.video iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+a.btn{display:block;text-decoration:none;text-align:center;width:100%}
+.cta{margin-top:2px}
 #confetti{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
 .conf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
 @keyframes fall{to{transform:translateY(105vh) rotate(680deg);opacity:.9}}
@@ -187,8 +191,8 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
   <div class="card">
     <div style="font-size:40px">🎈</div>
     <h2>מבוך ההרפתקה של WORLD STORY</h2>
-    <div class="tickets-banner">מחלקים <b>500 כרטיסים</b> לתערוכה בתמנע —<br>פתרו את המבוך ו<u>אולי</u> תזכו גם אתם!</div>
-    <p>בוחרים שלב, מזינים טלפון ויוצאים לדרך. ככל שהשלב מאתגר יותר — כך גדל הפרס שאפשר לזכות בו.</p>
+    <div class="tickets-banner">מחלקים <b>500 כרטיסים</b> לתערוכה בתמנע —<br>סיימו מהר ובפחות צעדים ו<u>אולי</u> הם יגיעו אליכם!</div>
+    <p>בוחרים שלב, מזינים טלפון ויוצאים לדרך. ככל שהשלב מאתגר יותר — כך גדל הפרס. הכרטיסים מוענקים למשתתפים עם <strong>הביצועים הטובים ביותר</strong>: זמן פתרון קצר ומספר צעדים נמוך.</p>
 
     <div class="levels" id="levels">
       <button class="lvl" data-lvl="easy">
@@ -213,10 +217,10 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
       <input id="i-phone0" type="tel" inputmode="numeric" autocomplete="tel" placeholder="050-0000000" enterkeyhint="go">
       <div class="msg">צריך מספר נייד ישראלי תקין, למשל 0501234567</div>
     </div>
-    <label class="consent"><input type="checkbox" id="i-ok0" checked><span>מאשר/ת שהטלפון ישמש ליצירת קשר בנוגע להגרלת הכרטיסים ולעדכוני התערוכה.</span></label>
+    <label class="consent"><input type="checkbox" id="i-ok0" checked><span>מאשר/ת שהטלפון ישמש ליצירת קשר בנוגע לכרטיסים ולעדכוני התערוכה.</span></label>
 
     <button class="btn btn-flame" id="startBtn" style="width:100%">יוצאים למסע!</button>
-    <div class="fineprint">סיום המבוך מכניס להגרלה ואינו מבטיח זכייה. 500 הכרטיסים מחולקים בין המסיימים לפי בחירת המערכת, והזוכים מקבלים הודעה אישית.</div>
+    <div class="fineprint">הפעילות פתוחה לכל אחד. 500 הכרטיסים מחולקים בין המשתתפים שסיימו את המבוך עם הביצועים הטובים ביותר — זמן וצעדים. סיום המבוך אינו מבטיח כרטיס, והזוכים מקבלים הודעה אישית.</div>
   </div>
 </div>
 
@@ -228,15 +232,15 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
     <div class="time-badge" id="winStats">—</div>
     <p id="winPrize">—</p>
     <button class="btn btn-flame" id="toFormBtn" style="width:100%">להשלמת הפרטים</button>
-    <div class="fineprint">ההשתתפות אינה מבטיחה זכייה. מתוך 500 הכרטיסים, הזוכים נבחרים על ידי המערכת.</div>
+    <div class="fineprint">מתוך 500 הכרטיסים, הכרטיסים מוענקים למשתתפים עם הזמן הקצר ביותר ומספר הצעדים הנמוך ביותר.</div>
   </div>
 </div>
 
 <!-- ===== טופס השלמה ===== -->
 <div class="screen" id="formScreen">
   <div class="card">
-    <h2>עוד רגע בהגרלה</h2>
-    <p>הטלפון כבר אצלנו — נשאר רק לדעת למי לשלוח את הכרטיסים.</p>
+    <h2>רק רגע לפני התוצאה</h2>
+    <p>הטלפון כבר אצלנו — נשאר רק לדעת למי לשלוח את הכרטיסים אם התוצאה שלכם תוביל.</p>
     <div class="field" id="f-name">
       <label for="i-name">שם מלא</label>
       <input id="i-name" type="text" autocomplete="name" placeholder="ישראל ישראלי" enterkeyhint="next">
@@ -252,9 +256,9 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
       <input id="i-phone2" type="tel" inputmode="numeric" autocomplete="tel">
       <div class="msg">מספר נייד ישראלי תקין</div>
     </div>
-    <label class="consent"><input type="checkbox" id="i-ok" checked><span>מאשר/ת קבלת דיוור מהתערוכה ואת תקנון ההגרלה.</span></label>
-    <button class="btn btn-navy" id="sendBtn" style="width:100%">שולחים אותי להגרלה</button>
-    <div class="fineprint">הפרטים נשמרים לצורך ההגרלה והדיוור בלבד. אפשר להסיר את עצמכם בכל עת.</div>
+    <label class="consent"><input type="checkbox" id="i-ok" checked><span>מאשר/ת קבלת דיוור מהתערוכה ואת תנאי הפעילות.</span></label>
+    <button class="btn btn-navy" id="sendBtn" style="width:100%">שומרים את התוצאה שלי</button>
+    <div class="fineprint">הפרטים נשמרים לצורך הפעילות והדיוור בלבד. אפשר להסיר את עצמכם בכל עת.</div>
   </div>
 </div>
 
@@ -262,9 +266,11 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
 <div class="screen" id="thanksScreen">
   <div class="card">
     <div style="font-size:42px">📮</div>
-    <h2>הפרטים נקלטו</h2>
+    <h2>התוצאה שלכם נשמרה</h2>
     <p id="thanksLine">—</p>
-    <button class="btn btn-flame" id="againBtn" style="width:100%">לשלב הבא במבוך חדש</button>
+    <div class="video"><iframe id="promoVideo" data-src="" title="WORLD STORY — סרטון התערוכה" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen loading="lazy"></iframe></div>
+    <a class="btn btn-flame cta" id="ticketsBtn" href="#" target="_blank" rel="noopener">לפרטים וכרטיסים לתערוכה</a>
+    <button class="btn btn-ghost" id="againBtn" style="width:100%;margin-top:8px">לשפר תוצאה במבוך חדש</button>
     <div class="fineprint">שתפו חברים — לכל אחד יש מבוך משלו.</div>
   </div>
 </div>
@@ -290,11 +296,15 @@ td .wbox{width:20px;height:20px;accent-color:var(--flame)}
         <option value="open">התחילו ולא סיימו</option>
         <option value="win">זוכים שנבחרו</option>
       </select>
-      <button class="btn btn-ghost btn-sm" id="pickBtn">בחירת זוכים אקראית</button>
+      <select id="sort">
+        <option value="perf">מיון לפי ביצועים</option>
+        <option value="date">מיון לפי תאריך</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" id="pickBtn">סימון המובילים כזוכים</button>
     </div>
     <div class="table-wrap"><table>
       <thead><tr>
-        <th>זוכה</th><th>שם</th><th>טלפון</th><th>אימייל</th><th>שלב</th><th>כרטיסים</th>
+        <th>זוכה</th><th>דירוג</th><th>שם</th><th>טלפון</th><th>אימייל</th><th>שלב</th><th>כרטיסים</th>
         <th>זמן</th><th>צעדים</th><th>סטטוס</th><th>תאריך</th>
       </tr></thead>
       <tbody id="rows"></tbody>
@@ -315,7 +325,9 @@ const CONFIG = {
   EXHIBITION: "WORLD STORY · תמנע",
   // כתובת ה-Web App של Google Apps Script (ראו מדריך ההקמה).
   // כשהשדה מלא – כל רשומה נכתבת גם לגיליון Google Sheets ומשם מייצאים לאקסל.
-  SHEET_URL: "https://script.google.com/macros/s/AKfycbyS3ZNailFURlpOoye2JfdLLjuvK0E1FrSHxZD9xSf25Pdev9btJwx0vqiVNO7-qNw/exec"
+  SHEET_URL: "https://script.google.com/macros/s/AKfycbyS3ZNailFURlpOoye2JfdLLjuvK0E1FrSHxZD9xSf25Pdev9btJwx0vqiVNO7-qNw/exec",
+  VIDEO_ID: "GfREq2IaIX4",
+  TICKETS_URL: "https://www.to-mix.co.il/world-story-exhibition/?utm_source=game&utm_medium=game"
 };
 const LEVELS = {
   easy:   { cells:130, braid:.14, stamps:2, tickets:1, name:"שלב 1 · מסע ראשון",    prize:"כרטיס אחד" },
@@ -632,7 +644,7 @@ $("#startBtn").onclick=async ()=>{
 function win(){
   M.done=true; dragging=false; clearInterval(timerId); burst(90);
   $("#winStats").textContent=`⏱ ${fmtTime(elapsed)} · 👣 ${moves} צעדים · 🏛️ ${M.stamps.length} חותמות`;
-  $("#winPrize").innerHTML=`סיימתם את <strong>${LEVELS[level].name}</strong> — הפרס בשלב הזה הוא <strong>${LEVELS[level].prize}</strong> לתערוכה בתמנע.<br>נשארו עוד כמה פרטים ואתם בתוך ההגרלה על 500 הכרטיסים.`;
+  $("#winPrize").innerHTML=`סיימתם את <strong>${LEVELS[level].name}</strong> — הפרס בשלב הזה הוא <strong>${LEVELS[level].prize}</strong> לתערוכה בתמנע.<br>השאירו פרטים כדי שהתוצאה שלכם תיכנס לטבלת המובילים של הפעילות.`;
   setTimeout(()=>$("#winScreen").classList.add("show"),700);
 }
 $("#toFormBtn").onclick=()=>{
@@ -653,13 +665,16 @@ $("#sendBtn").onclick=async ()=>{
     completedAt:new Date().toISOString(), seconds:Math.round(elapsed), moves, status:"סיים"
   });
   await Store.set(session.id,session);
-  btn.disabled=false; btn.textContent="שולחים אותי להגרלה";
-  $("#thanksLine").innerHTML=`תודה ${name.split(" ")[0]}! אתם בהגרלה על <strong>${session.prize}</strong> מתוך 500 הכרטיסים לתערוכה בתמנע. הזוכים מקבלים הודעה אישית.`;
+  btn.disabled=false; btn.textContent="שומרים את התוצאה שלי";
+  $("#thanksLine").innerHTML=`תודה ${name.split(" ")[0]}! התוצאה שלכם נשמרה: <strong>⏱ ${fmtTime(session.seconds)} · 👣 ${session.moves} צעדים</strong>.<br>הכרטיסים (${session.prize}) מוענקים למשתתפים עם הביצועים הטובים ביותר, והזוכים יקבלו הודעה אישית.`;
+  $("#ticketsBtn").href=CONFIG.TICKETS_URL;
+  const vid=$("#promoVideo");
+  if(!vid.src) vid.src=`https://www.youtube.com/embed/${CONFIG.VIDEO_ID}?rel=0&modestbranding=1&playsinline=1`;
   $("#formScreen").classList.remove("show");
   $("#thanksScreen").classList.add("show");
   burst(50);
 };
-$("#againBtn").onclick=()=>{ $("#thanksScreen").classList.remove("show"); $("#introScreen").classList.add("show"); };
+$("#againBtn").onclick=()=>{ const v=$("#promoVideo"); v.src=""; $("#thanksScreen").classList.remove("show"); $("#introScreen").classList.add("show"); };
 function flash(sel){ const e=document.querySelector(sel); e.style.color="#E8452F"; setTimeout(()=>e.style.color="",1800); }
 
 /* ============================================================
@@ -697,9 +712,10 @@ $("#closeAdmin").onclick=()=>$("#adminScreen").classList.remove("show");
 $("#refreshBtn").onclick=loadLeads;
 $("#q").oninput=renderTable;
 $("#filter").onchange=renderTable;
+$("#sort").onchange=renderTable;
 
 async function loadLeads(){
-  $("#rows").innerHTML=`<tr><td colspan="10" class="empty">טוען…</td></tr>`;
+  $("#rows").innerHTML=`<tr><td colspan="11" class="empty">טוען…</td></tr>`;
   LEADS=await Store.all();
   $("#storeNote").textContent = CONFIG.SHEET_URL
     ? "המאגר המלא נשמר בגיליון Google Sheets המחובר. הטבלה כאן מציגה את הרשומות של הדפדפן הנוכחי בלבד."
@@ -707,6 +723,21 @@ async function loadLeads(){
       ? "הרשומות נשמרות באחסון האפליקציה ומשותפות לכל מי שנכנס למאגר עם הקוד."
       : "אחסון קבוע לא זמין כאן — הרשומות נשמרות בזיכרון הדפדפן עד לרענון. חברו גיליון Google Sheets לפני עלייה לאוויר.");
   renderTable();
+}
+/* דירוג ביצועים: מי שסיים, שלב גבוה יותר קודם, ואז זמן קצר ומעט צעדים */
+function perfCmp(a,b){
+  const fa=a.status==="סיים", fb=b.status==="סיים";
+  if(fa!==fb) return fa?-1:1;
+  const ta=(LEVELS[a.level]||{}).tickets||0, tb=(LEVELS[b.level]||{}).tickets||0;
+  if(ta!==tb) return tb-ta;
+  const sa=a.seconds||1e9, sb=b.seconds||1e9;
+  if(sa!==sb) return sa-sb;
+  return (a.moves||1e9)-(b.moves||1e9);
+}
+let RANK={};
+function buildRanks(){
+  RANK={};
+  LEADS.filter(l=>l.status==="סיים").sort(perfCmp).forEach((l,i)=>RANK[l.key]=i+1);
 }
 function filtered(){
   const q=$("#q").value.trim().toLowerCase(), f=$("#filter").value;
@@ -719,7 +750,8 @@ function filtered(){
   });
 }
 function renderTable(){
-  const rows=filtered();
+  buildRanks();
+  const rows=filtered().sort($("#sort").value==="perf"?perfCmp:(a,b)=>(b.startedAt||"").localeCompare(a.startedAt||""));
   const done=LEADS.filter(l=>l.status==="סיים").length;
   const winners=LEADS.filter(l=>l.winner);
   const given=winners.reduce((s,l)=>s+(l.tickets||0),0);
@@ -729,10 +761,11 @@ function renderTable(){
     <div class="stat">זוכים שנבחרו<b>${winners.length}</b></div>
     <div class="stat">כרטיסים שחולקו<b>${given} / ${CONFIG.TOTAL_TICKETS}</b></div>
     <div class="stat">נותרו<b>${Math.max(0,CONFIG.TOTAL_TICKETS-given)}</b></div>`;
-  if(!rows.length){ $("#rows").innerHTML=`<tr><td colspan="10" class="empty">אין רשומות להצגה</td></tr>`; return; }
+  if(!rows.length){ $("#rows").innerHTML=`<tr><td colspan="11" class="empty">אין רשומות להצגה</td></tr>`; return; }
   $("#rows").innerHTML=rows.map(l=>`
     <tr class="${l.winner?"win":""}">
       <td><input class="wbox" type="checkbox" data-k="${l.key}" ${l.winner?"checked":""}></td>
+      <td>${RANK[l.key]?"#"+RANK[l.key]:"—"}</td>
       <td>${esc(l.name)||"—"}</td>
       <td dir="ltr">${esc(l.phone)}</td>
       <td dir="ltr">${esc(l.email)||"—"}</td>
@@ -754,28 +787,28 @@ function renderTable(){
 }
 const esc=s=>String(s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
 
-/* בחירת זוכים אקראית עד תקרת הכרטיסים */
+/* סימון המובילים כזוכים, עד תקרת הכרטיסים */
 $("#pickBtn").onclick=async ()=>{
-  const pool=LEADS.filter(l=>l.status==="סיים" && !l.winner);
-  if(!pool.length){ alert("אין משתתפים שסיימו וטרם נבחרו"); return; }
+  const pool=LEADS.filter(l=>l.status==="סיים" && !l.winner).sort(perfCmp);
+  if(!pool.length){ alert("אין משתתפים שסיימו וטרם סומנו"); return; }
   let given=LEADS.filter(l=>l.winner).reduce((s,l)=>s+(l.tickets||0),0);
-  const howMany=parseInt(prompt(`כמה זוכים לבחור אקראית? (נותרו ${CONFIG.TOTAL_TICKETS-given} כרטיסים)`,"10"),10);
+  const howMany=parseInt(prompt(`כמה מהמובילים לסמן כזוכים? (נותרו ${CONFIG.TOTAL_TICKETS-given} כרטיסים)`,"10"),10);
   if(!howMany||howMany<1) return;
-  const shuffled=pool.sort(()=>Math.random()-.5);
   let picked=0;
-  for(const l of shuffled){
+  for(const l of pool){
     if(picked>=howMany) break;
     if(given+(l.tickets||0)>CONFIG.TOTAL_TICKETS) continue;
     l.winner=true; given+=l.tickets||0; picked++;
     const {key,...rec}=l; await Store.set(key,rec);
   }
-  alert(`נבחרו ${picked} זוכים · סה"כ ${given} כרטיסים מתוך ${CONFIG.TOTAL_TICKETS}`);
+  alert(`סומנו ${picked} זוכים מובילים · סה"כ ${given} כרטיסים מתוך ${CONFIG.TOTAL_TICKETS}`);
   renderTable();
 };
 
 /* ייצוא */
 const COLS=[
   ["זוכה", l=>l.winner?"כן":""],
+  ["דירוג", l=>RANK[l.key]||""],
   ["שם", l=>l.name],
   ["טלפון", l=>l.phone],
   ["אימייל", l=>l.email],
