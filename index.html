@@ -191,7 +191,7 @@ a.btn{display:block;text-decoration:none;text-align:center;width:100%}
   <div class="card">
     <div style="font-size:40px">🎈</div>
     <h2>מבוך ההרפתקה של WORLD STORY</h2>
-    <div class="tickets-banner">מחלקים <b>500 כרטיסים</b> לתערוכה בתמנע —<br>סיימו מהר ובפחות צעדים ו<u>אולי</u> הם יגיעו אליכם!</div>
+    <div class="tickets-banner">מחלקים <b>500 כרטיסים</b> לתערוכה במתנה —<br>סיימו מהר ובפחות צעדים ו<u>אולי</u> הם יגיעו אליכם!</div>
     <p>בוחרים שלב, מזינים טלפון ויוצאים לדרך. ככל שהשלב מאתגר יותר — כך גדל הפרס. הכרטיסים מוענקים למשתתפים עם <strong>הביצועים הטובים ביותר</strong>: זמן פתרון קצר ומספר צעדים נמוך.</p>
 
     <div class="levels" id="levels">
@@ -644,7 +644,7 @@ $("#startBtn").onclick=async ()=>{
 function win(){
   M.done=true; dragging=false; clearInterval(timerId); burst(90);
   $("#winStats").textContent=`⏱ ${fmtTime(elapsed)} · 👣 ${moves} צעדים · 🏛️ ${M.stamps.length} חותמות`;
-  $("#winPrize").innerHTML=`סיימתם את <strong>${LEVELS[level].name}</strong> — הפרס בשלב הזה הוא <strong>${LEVELS[level].prize}</strong> לתערוכה בתמנע.<br>השאירו פרטים כדי שהתוצאה שלכם תיכנס לטבלת המובילים של הפעילות.`;
+  $("#winPrize").innerHTML=`סיימתם את <strong>${LEVELS[level].name}</strong> — הפרס בשלב הזה הוא <strong>${LEVELS[level].prize}</strong> לתערוכה במתנה.<br>השאירו פרטים כדי שהתוצאה שלכם תיכנס לטבלת המובילים של הפעילות.`;
   setTimeout(()=>$("#winScreen").classList.add("show"),700);
 }
 $("#toFormBtn").onclick=()=>{
