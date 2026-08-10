@@ -1,0 +1,827 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>WORLD STORY · מבוך ההרפתקה</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@700;800&family=Rubik:wght@400;500;700&family=Secular+One&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   WORLD STORY – מבוך דיגיטלי + מאגר לידים מובנה
+   ============================================================ */
+:root{
+  --sky-top:#2E8BD6; --sky-mid:#63B8ED; --sky-low:#B9E2F8;
+  --navy:#10305E; --navy-soft:#1B4585; --white:#FFF;
+  --flame:#FF7A2F; --flame-deep:#E8452F; --sun:#F5C542; --meadow:#5E9C3A;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{height:100%;margin:0}
+body{font-family:"Rubik",system-ui,"Arial Hebrew",sans-serif;color:var(--navy);
+  background:linear-gradient(180deg,var(--sky-top) 0%,var(--sky-mid) 45%,var(--sky-low) 100%);
+  overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+
+/* אווירה */
+.cloud{position:fixed;background:rgba(255,255,255,.85);border-radius:100px;pointer-events:none;z-index:0}
+.cloud::before,.cloud::after{content:"";position:absolute;background:inherit;border-radius:100px}
+.c1{width:150px;height:38px;top:12%;left:-160px;animation:drift 68s linear infinite}
+.c1::before{width:70px;height:70px;top:-30px;left:26px}.c1::after{width:52px;height:52px;top:-20px;left:80px}
+.c2{width:110px;height:28px;top:34%;left:-140px;opacity:.7;animation:drift 92s linear infinite 8s}
+.c2::before{width:54px;height:54px;top:-24px;left:20px}
+.c3{width:190px;height:44px;top:62%;left:-220px;opacity:.5;animation:drift 120s linear infinite 20s}
+.c3::before{width:86px;height:86px;top:-38px;left:34px}
+@keyframes drift{to{transform:translateX(calc(100vw + 260px))}}
+.ridge{position:fixed;left:0;right:0;bottom:0;height:26vh;min-height:120px;z-index:0;pointer-events:none}
+.ridge svg{width:100%;height:100%;display:block}
+
+/* מסך */
+#app{position:relative;z-index:2;height:100dvh;display:flex;flex-direction:column;padding:env(safe-area-inset-top) 10px calc(env(safe-area-inset-bottom) + 6px)}
+header{flex:0 0 auto;text-align:center;padding:6px 0 2px}
+.logo{display:inline-flex;align-items:center;gap:8px;line-height:.86;cursor:pointer}
+.logo-word{font-family:"Baloo 2",sans-serif;font-weight:800;color:#fff;text-align:center;
+  text-shadow:0 2px 0 #C9D8E8,0 4px 0 #A9BFD6,0 7px 0 var(--navy-soft),0 9px 14px rgba(6,28,60,.45)}
+.logo-word span{display:block;font-size:clamp(24px,7vw,44px)}
+.logo .balloon-mark{width:clamp(22px,6vw,34px)}
+.ribbon{display:inline-block;margin-top:6px;background:var(--navy);color:#fff;font-family:"Secular One",sans-serif;
+  font-size:clamp(11px,3.1vw,15px);padding:5px 18px;border-radius:6px;box-shadow:0 4px 0 rgba(6,24,52,.55)}
+
+#hud{flex:0 0 auto;display:flex;justify-content:center;align-items:center;gap:8px;margin:8px 0 6px;flex-wrap:wrap}
+.chip{background:rgba(255,255,255,.94);border-radius:999px;padding:6px 13px;font-weight:700;font-size:14px;
+  box-shadow:0 3px 0 rgba(9,38,80,.18);display:flex;align-items:center;gap:7px;white-space:nowrap}
+.chip small{font-weight:500;opacity:.65;font-size:11px}
+.stamp-dots{display:flex;gap:5px}
+.dot{width:20px;height:20px;border-radius:50%;background:rgba(16,48,94,.13);display:grid;place-items:center;font-size:11px;transition:.25s}
+.dot.on{background:linear-gradient(180deg,var(--sun),var(--flame));box-shadow:0 0 0 2px #fff inset;transform:scale(1.12)}
+
+#board{flex:1 1 auto;position:relative;min-height:0;display:grid;place-items:center}
+#maze{touch-action:none;display:block;border-radius:18px}
+#coach{position:absolute;inset-inline-start:50%;transform:translateX(50%);bottom:8px;background:rgba(16,48,94,.86);color:#fff;
+  padding:7px 15px;border-radius:999px;font-size:13px;pointer-events:none;transition:opacity .4s;white-space:nowrap}
+footer{flex:0 0 auto;display:flex;justify-content:center;gap:8px;padding-top:6px}
+.btn{border:0;cursor:pointer;font-family:inherit;font-weight:700;border-radius:999px;transition:transform .12s}
+.btn:active{transform:translateY(2px)}
+.btn-ghost{background:rgba(255,255,255,.92);color:var(--navy);padding:9px 18px;font-size:14px;box-shadow:0 3px 0 rgba(9,38,80,.2)}
+.btn-flame{background:linear-gradient(180deg,var(--flame),var(--flame-deep));color:#fff;padding:14px 28px;font-size:17px;box-shadow:0 5px 0 #B32E1E}
+.btn-navy{background:var(--navy);color:#fff;padding:14px 28px;font-size:17px;box-shadow:0 5px 0 #061C3C}
+.btn-sm{padding:8px 14px;font-size:13px;box-shadow:0 3px 0 rgba(9,38,80,.2)}
+.btn[disabled]{opacity:.45;cursor:default}
+
+.screen{position:fixed;inset:0;z-index:20;display:none;place-items:center;padding:16px;
+  background:linear-gradient(180deg,rgba(20,70,130,.55),rgba(10,40,90,.78));backdrop-filter:blur(3px)}
+.screen.show{display:grid;animation:fade .35s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.card{width:min(440px,100%);max-height:92dvh;overflow:auto;background:#fff;border-radius:26px;padding:24px 20px;text-align:center;
+  box-shadow:0 20px 50px rgba(4,20,45,.4);animation:pop .4s cubic-bezier(.2,1.3,.4,1)}
+.card.wide{width:min(1100px,100%);text-align:start;padding:20px}
+@keyframes pop{from{transform:scale(.9) translateY(12px);opacity:0}to{transform:none;opacity:1}}
+.card h2{font-family:"Secular One",sans-serif;font-size:25px;margin:6px 0 6px}
+.card p{font-size:14.5px;line-height:1.55;margin:0 0 14px;color:#37517D}
+
+.tickets-banner{background:linear-gradient(90deg,#FFF0E2,#FFE7CF);border:2px dashed var(--flame);border-radius:16px;
+  padding:10px 12px;font-weight:700;font-size:14.5px;color:#B33F17;margin-bottom:14px}
+.tickets-banner b{font-size:19px}
+
+/* בחירת רמה = בחירת פרס */
+.levels{display:grid;gap:8px;margin-bottom:16px}
+.lvl{display:flex;align-items:center;gap:10px;border:2px solid #DCE8F6;background:#fff;border-radius:16px;padding:11px 12px;
+  font-family:inherit;color:var(--navy);cursor:pointer;text-align:start;width:100%}
+.lvl.sel{border-color:var(--flame);background:#FFF5EE;box-shadow:0 3px 0 rgba(232,69,47,.22)}
+.lvl .lv-ico{font-size:22px;width:34px;text-align:center}
+.lvl .lv-txt{flex:1}
+.lvl .lv-name{font-weight:700;font-size:15px}
+.lvl .lv-sub{font-size:12px;color:#61789F}
+.lvl .lv-prize{background:var(--navy);color:#fff;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:700;white-space:nowrap}
+.lvl.sel .lv-prize{background:var(--flame-deep)}
+
+.field{text-align:start;margin-bottom:12px}
+.field label{display:block;font-size:13px;font-weight:700;margin-bottom:5px;color:var(--navy-soft)}
+.field input{width:100%;border:2px solid #DCE8F6;border-radius:14px;padding:13px 14px;font-family:inherit;font-size:16px;background:#F8FBFF;color:var(--navy)}
+.field input:focus{outline:none;border-color:var(--flame);background:#fff}
+.field.err input{border-color:#E8452F;background:#FFF4F2}
+.field .msg{display:none;font-size:12px;color:#E8452F;margin-top:4px;font-weight:500}
+.field.err .msg{display:block}
+.consent{display:flex;gap:9px;align-items:flex-start;text-align:start;font-size:12.5px;line-height:1.45;color:#5A7099;margin:2px 0 14px}
+.consent input{width:20px;height:20px;flex:0 0 auto;margin-top:1px;accent-color:var(--flame)}
+.fineprint{font-size:11.5px;line-height:1.5;color:#7488A8;margin-top:12px}
+.time-badge{display:inline-block;background:#F1F7FE;border-radius:999px;padding:7px 16px;font-weight:700;margin-bottom:12px}
+
+/* מאגר לידים */
+.admin-top{display:flex;flex-wrap:wrap;gap:8px;align-items:center;justify-content:space-between;margin-bottom:12px}
+.admin-title{font-family:"Secular One",sans-serif;font-size:20px}
+.stat-row{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.stat{background:#F1F7FE;border-radius:14px;padding:8px 14px;font-size:13px;font-weight:700}
+.stat b{display:block;font-size:20px;font-family:"Secular One",sans-serif}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}
+.toolbar input,.toolbar select{border:2px solid #DCE8F6;border-radius:12px;padding:9px 12px;font-family:inherit;font-size:14px;background:#F8FBFF}
+.table-wrap{overflow:auto;max-height:52dvh;border:1px solid #E3ECF7;border-radius:14px}
+table{border-collapse:collapse;width:100%;font-size:13px;white-space:nowrap}
+th,td{padding:9px 10px;border-bottom:1px solid #EDF3FA;text-align:start}
+th{position:sticky;top:0;background:#10305E;color:#fff;font-weight:700;z-index:1}
+tbody tr:nth-child(even){background:#F8FBFF}
+tbody tr.win{background:#FFF3E6}
+td .wbox{width:20px;height:20px;accent-color:var(--flame)}
+.tag{border-radius:999px;padding:3px 9px;font-size:11.5px;font-weight:700}
+.tag.done{background:#E4F5E0;color:#3C7A2A}
+.tag.open{background:#FDECEA;color:#B33F17}
+.empty{padding:26px;text-align:center;color:#7488A8;font-size:14px}
+
+#confetti{position:fixed;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+.conf{position:absolute;width:9px;height:14px;border-radius:2px;animation:fall linear forwards}
+@keyframes fall{to{transform:translateY(105vh) rotate(680deg);opacity:.9}}
+@media (prefers-reduced-motion:reduce){.cloud,.conf{animation:none!important}.card{animation:none}}
+</style>
+</head>
+<body>
+
+<div class="cloud c1"></div><div class="cloud c2"></div><div class="cloud c3"></div>
+<div class="ridge" aria-hidden="true">
+  <svg viewBox="0 0 1200 220" preserveAspectRatio="none">
+    <path fill="#7FA9C9" opacity=".55" d="M0 150 L90 84 L150 130 L235 62 L320 132 L400 96 L470 148 L560 88 L640 140 L720 74 L800 136 L880 100 L960 146 L1050 80 L1130 138 L1200 108 V220 H0 Z"/>
+    <g fill="#3E6B4A" opacity=".85">
+      <path d="M0 178 L1200 178 V220 H0 Z"/>
+      <path d="M150 178 L196 106 L242 178 Z"/>
+      <path d="M330 178 v-40 h14 v-16 a20 20 0 0 1 40 0 v16 h14 v40 Z"/>
+      <path d="M520 178 V96 l10-22 l10 22 v82 Z"/>
+      <path d="M690 178 v-26 h-22 l22-20 h-16 l24-22 l24 22 h-16 l22 20 h-22 v26 Z"/>
+      <path d="M868 178 l16-60 h-8 l10-40 h-4 l6-24 l6 24 h-4 l10 40 h-8 l16 60 Z"/>
+      <path d="M1030 178 v-46 a46 26 0 0 1 92 0 v46 Z"/>
+    </g>
+  </svg>
+</div>
+
+<div id="app">
+  <header>
+    <div class="logo" id="logoTap">
+      <svg class="balloon-mark" viewBox="0 0 60 80" aria-hidden="true">
+        <path d="M30 2c15 0 26 12 26 27 0 14-12 24-20 31H24C16 53 4 43 4 29 4 14 15 2 30 2Z" fill="#E8452F"/>
+        <path d="M30 2c6 0 9 12 9 27s-4 24-9 31c-5-7-9-16-9-31S24 2 30 2Z" fill="#F5C542"/>
+        <path d="M30 2c15 0 26 12 26 27 0 14-12 24-20 31 6-9 9-19 9-31S42 6 30 2Z" fill="#2E63C8"/>
+        <path d="M23 62h14l-2 12H25Z" fill="#8A5A2B"/>
+      </svg>
+      <span class="logo-word"><span>WORLD</span><span>STORY</span></span>
+    </div>
+    <div class="ribbon">מסע של חוויות, סיפורים והרפתקאות מכל העולם!</div>
+  </header>
+
+  <div id="hud">
+    <div class="chip">⏱ <span id="timer">00:00</span></div>
+    <div class="chip"><small>חותמות</small><span class="stamp-dots" id="dots"></span></div>
+    <div class="chip"><small>הפרס</small><span id="prizeChip">—</span></div>
+  </div>
+
+  <div id="board">
+    <canvas id="maze"></canvas>
+    <div id="coach">שימו אצבע על הכדור והחליקו בתוך השביל</div>
+  </div>
+
+  <footer>
+    <button class="btn btn-ghost" id="hintBtn">💡 רמז</button>
+    <button class="btn btn-ghost" id="newBtn">🔄 מבוך חדש</button>
+    <button class="btn btn-ghost" id="lvlBtn">🎟️ שלבים ופרסים</button>
+  </footer>
+</div>
+
+<!-- ===== מסך פתיחה: פרסים + טלפון (חובה) ===== -->
+<div class="screen show" id="introScreen">
+  <div class="card">
+    <div style="font-size:40px">🎈</div>
+    <h2>מבוך ההרפתקה של WORLD STORY</h2>
+    <div class="tickets-banner">מחלקים <b>500 כרטיסים</b> לתערוכה בתמנע —<br>פתרו את המבוך ו<u>אולי</u> תזכו גם אתם!</div>
+    <p>בוחרים שלב, מזינים טלפון ויוצאים לדרך. ככל שהשלב מאתגר יותר — כך גדל הפרס שאפשר לזכות בו.</p>
+
+    <div class="levels" id="levels">
+      <button class="lvl" data-lvl="easy">
+        <span class="lv-ico">🧭</span>
+        <span class="lv-txt"><span class="lv-name">שלב 1 · מסע ראשון</span><span class="lv-sub">מבוך קליל, 2 חותמות</span></span>
+        <span class="lv-prize">כרטיס אחד</span>
+      </button>
+      <button class="lvl sel" data-lvl="normal">
+        <span class="lv-ico">🗺️</span>
+        <span class="lv-txt"><span class="lv-name">שלב 2 · הרפתקה</span><span class="lv-sub">מבוך מסובך, 3 חותמות</span></span>
+        <span class="lv-prize">זוג כרטיסים</span>
+      </button>
+      <button class="lvl" data-lvl="hard">
+        <span class="lv-ico">🏔️</span>
+        <span class="lv-txt"><span class="lv-name">שלב 3 · מסביב לעולם</span><span class="lv-sub">מבוך ענק, 4 חותמות</span></span>
+        <span class="lv-prize">3 כרטיסים</span>
+      </button>
+    </div>
+
+    <div class="field" id="f-phone0">
+      <label for="i-phone0">טלפון נייד (חובה כדי להתחיל)</label>
+      <input id="i-phone0" type="tel" inputmode="numeric" autocomplete="tel" placeholder="050-0000000" enterkeyhint="go">
+      <div class="msg">צריך מספר נייד ישראלי תקין, למשל 0501234567</div>
+    </div>
+    <label class="consent"><input type="checkbox" id="i-ok0" checked><span>מאשר/ת שהטלפון ישמש ליצירת קשר בנוגע להגרלת הכרטיסים ולעדכוני התערוכה.</span></label>
+
+    <button class="btn btn-flame" id="startBtn" style="width:100%">יוצאים למסע!</button>
+    <div class="fineprint">סיום המבוך מכניס להגרלה ואינו מבטיח זכייה. 500 הכרטיסים מחולקים בין המסיימים לפי בחירת המערכת, והזוכים מקבלים הודעה אישית.</div>
+  </div>
+</div>
+
+<!-- ===== ניצחון ===== -->
+<div class="screen" id="winScreen">
+  <div class="card">
+    <div style="font-size:42px">🏆</div>
+    <h2>פיצחתם את המבוך!</h2>
+    <div class="time-badge" id="winStats">—</div>
+    <p id="winPrize">—</p>
+    <button class="btn btn-flame" id="toFormBtn" style="width:100%">להשלמת הפרטים</button>
+    <div class="fineprint">ההשתתפות אינה מבטיחה זכייה. מתוך 500 הכרטיסים, הזוכים נבחרים על ידי המערכת.</div>
+  </div>
+</div>
+
+<!-- ===== טופס השלמה ===== -->
+<div class="screen" id="formScreen">
+  <div class="card">
+    <h2>עוד רגע בהגרלה</h2>
+    <p>הטלפון כבר אצלנו — נשאר רק לדעת למי לשלוח את הכרטיסים.</p>
+    <div class="field" id="f-name">
+      <label for="i-name">שם מלא</label>
+      <input id="i-name" type="text" autocomplete="name" placeholder="ישראל ישראלי" enterkeyhint="next">
+      <div class="msg">נשמח לדעת איך לפנות אליכם</div>
+    </div>
+    <div class="field" id="f-mail">
+      <label for="i-mail">אימייל</label>
+      <input id="i-mail" type="email" inputmode="email" autocomplete="email" placeholder="name@mail.com" enterkeyhint="done">
+      <div class="msg">כתובת אימייל תקינה, למשל name@mail.com</div>
+    </div>
+    <div class="field" id="f-phone2">
+      <label for="i-phone2">טלפון נייד</label>
+      <input id="i-phone2" type="tel" inputmode="numeric" autocomplete="tel">
+      <div class="msg">מספר נייד ישראלי תקין</div>
+    </div>
+    <label class="consent"><input type="checkbox" id="i-ok" checked><span>מאשר/ת קבלת דיוור מהתערוכה ואת תקנון ההגרלה.</span></label>
+    <button class="btn btn-navy" id="sendBtn" style="width:100%">שולחים אותי להגרלה</button>
+    <div class="fineprint">הפרטים נשמרים לצורך ההגרלה והדיוור בלבד. אפשר להסיר את עצמכם בכל עת.</div>
+  </div>
+</div>
+
+<!-- ===== תודה ===== -->
+<div class="screen" id="thanksScreen">
+  <div class="card">
+    <div style="font-size:42px">📮</div>
+    <h2>הפרטים נקלטו</h2>
+    <p id="thanksLine">—</p>
+    <button class="btn btn-flame" id="againBtn" style="width:100%">לשלב הבא במבוך חדש</button>
+    <div class="fineprint">שתפו חברים — לכל אחד יש מבוך משלו.</div>
+  </div>
+</div>
+
+<!-- ===== מאגר הלידים ===== -->
+<div class="screen" id="adminScreen">
+  <div class="card wide">
+    <div class="admin-top">
+      <div class="admin-title">🎟️ מאגר משתתפים · WORLD STORY</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn btn-ghost btn-sm" id="refreshBtn">רענון</button>
+        <button class="btn btn-ghost btn-sm" id="copyBtn">העתקה לאקסל</button>
+        <button class="btn btn-navy btn-sm" id="csvBtn">הורדת קובץ אקסל</button>
+        <button class="btn btn-ghost btn-sm" id="closeAdmin">סגירה</button>
+      </div>
+    </div>
+    <div class="stat-row" id="stats"></div>
+    <div class="toolbar">
+      <input id="q" type="search" placeholder="חיפוש שם / טלפון / אימייל" style="flex:1;min-width:180px">
+      <select id="filter">
+        <option value="all">כל הרשומות</option>
+        <option value="done">סיימו את המבוך</option>
+        <option value="open">התחילו ולא סיימו</option>
+        <option value="win">זוכים שנבחרו</option>
+      </select>
+      <button class="btn btn-ghost btn-sm" id="pickBtn">בחירת זוכים אקראית</button>
+    </div>
+    <div class="table-wrap"><table>
+      <thead><tr>
+        <th>זוכה</th><th>שם</th><th>טלפון</th><th>אימייל</th><th>שלב</th><th>כרטיסים</th>
+        <th>זמן</th><th>צעדים</th><th>סטטוס</th><th>תאריך</th>
+      </tr></thead>
+      <tbody id="rows"></tbody>
+    </table></div>
+    <div class="fineprint" id="storeNote"></div>
+  </div>
+</div>
+
+<div id="confetti"></div>
+
+<script>
+/* ============================================================
+   הגדרות קמפיין
+   ============================================================ */
+const CONFIG = {
+  TOTAL_TICKETS: 500,
+  ADMIN_CODE: "worldstory",      // קוד כניסה למאגר הלידים (5 הקשות על הלוגו)
+  EXHIBITION: "WORLD STORY · תמנע",
+  // כתובת ה-Web App של Google Apps Script (ראו מדריך ההקמה).
+  // כשהשדה מלא – כל רשומה נכתבת גם לגיליון Google Sheets ומשם מייצאים לאקסל.
+  SHEET_URL: "https://script.google.com/macros/s/AKfycbyS3ZNailFURlpOoye2JfdLLjuvK0E1FrSHxZD9xSf25Pdev9btJwx0vqiVNO7-qNw/exec"
+};
+const LEVELS = {
+  easy:   { cells:130, braid:.14, stamps:2, tickets:1, name:"שלב 1 · מסע ראשון",    prize:"כרטיס אחד" },
+  normal: { cells:280, braid:.26, stamps:3, tickets:2, name:"שלב 2 · הרפתקה",       prize:"זוג כרטיסים" },
+  hard:   { cells:460, braid:.34, stamps:4, tickets:3, name:"שלב 3 · מסביב לעולם",  prize:"3 כרטיסים" }
+};
+
+/* ============================================================
+   אחסון מקומי של הרשומות (ללא webhook)
+   ============================================================ */
+function pushToSheet(rec){
+  if(!CONFIG.SHEET_URL) return;
+  try{
+    fetch(CONFIG.SHEET_URL,{
+      method:"POST", mode:"no-cors",
+      headers:{"Content-Type":"text/plain;charset=utf-8"},
+      body: JSON.stringify(rec)
+    }).catch(e=>console.warn("Sheet sync failed",e));
+  }catch(e){ console.warn("Sheet sync failed",e); }
+}
+
+const Store = {
+  mem:{}, ok:false,
+  async set(k,v){
+    pushToSheet({...v, id:k});
+    try{ if(window.storage){ await window.storage.set(k, JSON.stringify(v), true); this.ok=true; return; } }catch(e){ console.warn(e); }
+    this.mem[k]=v;
+  },
+  async get(k){
+    try{ if(window.storage){ const r=await window.storage.get(k,true); return r?JSON.parse(r.value):null; } }catch(e){}
+    return this.mem[k]||null;
+  },
+  async keys(){
+    try{ if(window.storage){ const r=await window.storage.list("lead:",true); return r?r.keys:[]; } }catch(e){}
+    return Object.keys(this.mem);
+  },
+  async all(){
+    const ks = await this.keys(); const out=[];
+    for(const k of ks){ const v=await this.get(k); if(v) out.push({key:k,...v}); }
+    return out.sort((a,b)=> (b.startedAt||"").localeCompare(a.startedAt||""));
+  }
+};
+
+/* ============================================================
+   כלים
+   ============================================================ */
+const $ = s => document.querySelector(s);
+const rnd = n => (Math.random()*n)|0;
+const okPhone = v => /^0(5\d|[2-489]|7\d)\d{7}$/.test(String(v).replace(/[\s-]/g,""));
+const okMail  = v => /^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(String(v).trim());
+const mark = (id,good)=>{ $(id).classList.toggle("err",!good); return good; };
+const fmtTime = s => String(Math.floor(s/60)).padStart(2,"0")+":"+String(Math.floor(s%60)).padStart(2,"0");
+
+/* ============================================================
+   מצב
+   ============================================================ */
+let level="normal", M=null, session=null;
+let started=0, elapsed=0, timerId=null, moves=0;
+let dragging=false, finger={x:0,y:0}, hintPath=null, hintUntil=0, playable=false;
+const cv=$("#maze"), ctx=cv.getContext("2d");
+
+/* ============================================================
+   יצירת מבוך: DFS + לולאות (שיטת "יד על הקיר" לא עובדת)
+   ============================================================ */
+function buildMaze(cols,rows,braid){
+  const c=[]; for(let i=0;i<cols*rows;i++) c.push({n:1,s:1,e:1,w:1,v:0});
+  const id=(x,y)=>y*cols+x;
+  const stack=[[0,rows-1]]; c[id(0,rows-1)].v=1;
+  while(stack.length){
+    const [x,y]=stack[stack.length-1]; const nb=[];
+    if(y>0&&!c[id(x,y-1)].v) nb.push([x,y-1,"n","s"]);
+    if(y<rows-1&&!c[id(x,y+1)].v) nb.push([x,y+1,"s","n"]);
+    if(x>0&&!c[id(x-1,y)].v) nb.push([x-1,y,"w","e"]);
+    if(x<cols-1&&!c[id(x+1,y)].v) nb.push([x+1,y,"e","w"]);
+    if(!nb.length){ stack.pop(); continue; }
+    const [nx,ny,d,od]=nb[rnd(nb.length)];
+    c[id(x,y)][d]=0; c[id(nx,ny)][od]=0; c[id(nx,ny)].v=1; stack.push([nx,ny]);
+  }
+  for(let y=0;y<rows;y++) for(let x=0;x<cols;x++){
+    const cell=c[id(x,y)];
+    if(cell.n+cell.s+cell.e+cell.w===3 && Math.random()<braid){
+      const o=[];
+      if(y>0&&cell.n) o.push(["n","s",x,y-1]);
+      if(y<rows-1&&cell.s) o.push(["s","n",x,y+1]);
+      if(x>0&&cell.w) o.push(["w","e",x-1,y]);
+      if(x<cols-1&&cell.e) o.push(["e","w",x+1,y]);
+      if(o.length){ const [d,od,nx,ny]=o[rnd(o.length)]; cell[d]=0; c[id(nx,ny)][od]=0; }
+    }
+  }
+  return {cols,rows,cells:c,id};
+}
+function neighbors(m,i){
+  const x=i%m.cols, c=m.cells[i], out=[];
+  if(!c.n) out.push(i-m.cols);
+  if(!c.s) out.push(i+m.cols);
+  if(!c.w && x>0) out.push(i-1);
+  if(!c.e && x<m.cols-1) out.push(i+1);
+  return out.filter(k=>k>=0 && k<m.cols*m.rows);
+}
+function bfs(m,from){
+  const N=m.cols*m.rows, dist=new Int32Array(N).fill(-1), prev=new Int32Array(N).fill(-1);
+  dist[from]=0; const q=[from];
+  for(let h=0;h<q.length;h++){ for(const nb of neighbors(m,q[h])) if(dist[nb]<0){ dist[nb]=dist[q[h]]+1; prev[nb]=q[h]; q.push(nb); } }
+  return {dist,prev};
+}
+const pathTo=(prev,t)=>{ const p=[]; let c=t; while(c>=0){p.push(c); c=prev[c];} return p.reverse(); };
+
+/* ============================================================
+   סיבוב משחק
+   ============================================================ */
+const ICONS=["🗼","🕌","🏛️","⛩️","🗽","🎡"];
+function newGame(){
+  const L=LEVELS[level];
+  const box=$("#board").getBoundingClientRect();
+  const W=Math.max(240,box.width-8), H=Math.max(260,box.height-8), aspect=W/H;
+  let rows=Math.max(7,Math.round(Math.sqrt(L.cells/aspect)));
+  let cols=Math.max(7,Math.round(rows*aspect));
+  if(cols%2===0) cols--; if(rows%2===0) rows--;
+
+  const m=buildMaze(cols,rows,L.braid);
+  m.start=m.id(0,rows-1); m.finish=m.id(cols-1,0);
+
+  const from=bfs(m,m.start), to=bfs(m,m.finish);
+  const cand=[];
+  for(let i=0;i<cols*rows;i++){
+    if(i===m.start||i===m.finish||from.dist[i]<4) continue;
+    const c=m.cells[i], walls=c.n+c.s+c.e+c.w;
+    cand.push({i, score:(from.dist[i]+to.dist[i]-to.dist[m.start])*2 + (walls===3?6:0) + from.dist[i]*.3});
+  }
+  cand.sort((a,b)=>b.score-a.score);
+  const picks=[], minGap=(cols+rows)/5;
+  for(const c of cand){
+    const x=c.i%cols, y=(c.i/cols)|0;
+    if(picks.every(p=>Math.abs(p%cols-x)+Math.abs(((p/cols)|0)-y)>minGap)) picks.push(c.i);
+    if(picks.length===L.stamps) break;
+  }
+  let k=0; while(picks.length<L.stamps && k<cand.length){ if(!picks.includes(cand[k].i)) picks.push(cand[k].i); k++; }
+  m.stamps=picks.map((i,n)=>({cell:i,icon:ICONS[n%ICONS.length],got:false,pulse:n}));
+
+  const cell=Math.floor(Math.min(W/cols,H/rows));
+  m.cell=cell; m.pad=Math.round(cell*.55);
+  m.w=cols*cell+m.pad*2; m.h=rows*cell+m.pad*2;
+  m.corridor=Math.max(9,cell*.62);
+  const dpr=Math.min(window.devicePixelRatio||1,2.5);
+  cv.width=m.w*dpr; cv.height=m.h*dpr;
+  cv.style.width=m.w+"px"; cv.style.height=m.h+"px";
+  ctx.setTransform(dpr,0,0,dpr,0,0);
+
+  M=m; M.trail=[m.start]; M.cur=m.start; M.px=cx(m.start); M.py=cy(m.start); M.done=false;
+  moves=0; hintPath=null; elapsed=0; started=performance.now();
+  clearInterval(timerId); timerId=setInterval(tick,250);
+  $("#prizeChip").textContent=L.prize;
+  renderDots();
+  showCoach("שימו אצבע על הכדור והחליקו בתוך השביל");
+}
+const cx=i=>M.pad+(i%M.cols)*M.cell+M.cell/2;
+const cy=i=>M.pad+(((i/M.cols)|0))*M.cell+M.cell/2;
+function tick(){ if(!playable) return; elapsed=(performance.now()-started)/1000; $("#timer").textContent=fmtTime(elapsed); }
+function renderDots(){ $("#dots").innerHTML=M.stamps.map(s=>`<span class="dot ${s.got?"on":""}">${s.got?"★":""}</span>`).join(""); }
+
+/* ============================================================
+   ציור
+   ============================================================ */
+function draw(){
+  const m=M; if(!m) return;
+  ctx.clearRect(0,0,m.w,m.h);
+  roundRect(0,0,m.w,m.h,18); ctx.fillStyle="rgba(255,255,255,.12)"; ctx.fill();
+  ctx.lineCap="round"; ctx.lineJoin="round";
+  ctx.save(); ctx.translate(0,Math.max(2,m.cell*.1)); passages("rgba(9,38,80,.20)",m.corridor+2); ctx.restore();
+  passages("#ffffff",m.corridor);
+
+  if(hintPath && performance.now()<hintUntil){
+    ctx.strokeStyle="rgba(46,139,214,.55)"; ctx.lineWidth=m.corridor*.5;
+    ctx.setLineDash([m.cell*.28,m.cell*.34]); ctx.lineDashOffset=-performance.now()/26;
+    ctx.beginPath(); hintPath.forEach((c,k)=>k?ctx.lineTo(cx(c),cy(c)):ctx.moveTo(cx(c),cy(c))); ctx.stroke();
+    ctx.setLineDash([]);
+  }
+  if(m.trail.length>1){
+    const g=ctx.createLinearGradient(cx(m.trail[0]),cy(m.trail[0]),m.px,m.py);
+    g.addColorStop(0,"#F5C542"); g.addColorStop(1,"#E8452F");
+    ctx.strokeStyle=g; ctx.lineWidth=m.corridor*.58;
+    ctx.beginPath(); m.trail.forEach((c,k)=>k?ctx.lineTo(cx(c),cy(c)):ctx.moveTo(cx(c),cy(c)));
+    ctx.lineTo(m.px,m.py); ctx.stroke();
+  }
+  badge(cx(m.start),cy(m.start),m.cell*.34,"#5E9C3A","🧭");
+  m.stamps.forEach(s=>{ if(s.got) return; s.pulse+=.05; badge(cx(s.cell),cy(s.cell),m.cell*(.34+Math.sin(s.pulse)*.03),"#2E63C8",s.icon); });
+  const all=m.stamps.every(s=>s.got);
+  badge(cx(m.finish),cy(m.finish),m.cell*.36,all?"#E8452F":"rgba(16,48,94,.35)",all?"🎈":"🔒");
+  player(m.px,m.py,Math.max(7,m.cell*.3));
+  requestAnimationFrame(loop);
+}
+function passages(color,width){
+  const m=M; ctx.strokeStyle=color; ctx.lineWidth=width; ctx.beginPath();
+  for(let y=0;y<m.rows;y++) for(let x=0;x<m.cols;x++){
+    const i=m.id(x,y), px=cx(i), py=cy(i);
+    ctx.moveTo(px,py); ctx.lineTo(px+.01,py);
+    if(!m.cells[i].e && x<m.cols-1){ ctx.moveTo(px,py); ctx.lineTo(px+m.cell,py); }
+    if(!m.cells[i].s && y<m.rows-1){ ctx.moveTo(px,py); ctx.lineTo(px,py+m.cell); }
+  }
+  ctx.stroke();
+}
+function badge(x,y,r,color,glyph){
+  ctx.beginPath(); ctx.arc(x,y,r,0,7); ctx.fillStyle=color; ctx.fill();
+  ctx.lineWidth=Math.max(1.5,r*.16); ctx.strokeStyle="#fff"; ctx.stroke();
+  ctx.font=`${r*1.05}px system-ui,"Apple Color Emoji","Segoe UI Emoji"`;
+  ctx.textAlign="center"; ctx.textBaseline="middle"; ctx.fillText(glyph,x,y+r*.04);
+}
+function player(x,y,r){
+  ctx.save(); ctx.shadowColor="rgba(9,38,80,.35)"; ctx.shadowBlur=r*.9; ctx.shadowOffsetY=r*.3;
+  ctx.beginPath(); ctx.arc(x,y,r,0,7);
+  const g=ctx.createRadialGradient(x-r*.3,y-r*.4,r*.2,x,y,r);
+  g.addColorStop(0,"#FFD36B"); g.addColorStop(.55,"#FF7A2F"); g.addColorStop(1,"#E8452F");
+  ctx.fillStyle=g; ctx.fill(); ctx.restore();
+  ctx.lineWidth=Math.max(1.5,r*.22); ctx.strokeStyle="#fff"; ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x-r*.35,y+r*.75); ctx.lineTo(x+r*.35,y+r*.75);
+  ctx.lineWidth=Math.max(2,r*.35); ctx.strokeStyle="#8A5A2B"; ctx.stroke();
+}
+function roundRect(x,y,w,h,r){
+  ctx.beginPath(); ctx.moveTo(x+r,y);
+  ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r);
+  ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath();
+}
+
+/* ============================================================
+   תנועה באצבע
+   ============================================================ */
+function loop(){
+  const m=M; if(!m) return;
+  const settled=Math.hypot(m.px-cx(m.cur),m.py-cy(m.cur))<.6;
+  if(dragging && playable && !m.done && settled){
+    let steps=0;
+    while(steps<3){
+      const curD=Math.hypot(finger.x-cx(m.cur),finger.y-cy(m.cur));
+      let best=-1,bd=Infinity;
+      for(const nb of neighbors(m,m.cur)){ const d=Math.hypot(finger.x-cx(nb),finger.y-cy(nb)); if(d<bd){bd=d;best=nb;} }
+      if(best>=0 && bd<curD-m.cell*.12){ moveTo(best); steps++; } else break;
+    }
+  }
+  m.px+=(cx(m.cur)-m.px)*.42; m.py+=(cy(m.cur)-m.py)*.42;
+  draw();
+}
+function moveTo(next){
+  const m=M;
+  if(m.trail.length>1 && m.trail[m.trail.length-2]===next) m.trail.pop(); else m.trail.push(next);
+  m.cur=next; moves++;
+  const s=m.stamps.find(s=>s.cell===next && !s.got);
+  if(s){
+    s.got=true; renderDots(); burst(14);
+    const left=m.stamps.filter(x=>!x.got).length;
+    showCoach(left?`חותמת נאספה! נשארו עוד ${left}`:"כל החותמות בידיים — לכיוון הכדור הפורח!");
+  }
+  if(next===m.finish){
+    if(m.stamps.every(x=>x.got)) win();
+    else showCoach("קו הסיום נעול — קודם אוספים את כל החותמות");
+  }
+}
+let coachId=null;
+function showCoach(t){ const el=$("#coach"); el.textContent=t; el.style.opacity=1; clearTimeout(coachId); coachId=setTimeout(()=>el.style.opacity=0,3200); }
+
+function toLocal(e){ const r=cv.getBoundingClientRect(); return {x:(e.clientX-r.left)*(M.w/r.width), y:(e.clientY-r.top)*(M.h/r.height)}; }
+cv.addEventListener("pointerdown",e=>{ if(!M||M.done||!playable) return; cv.setPointerCapture(e.pointerId); dragging=true; finger=toLocal(e); $("#coach").style.opacity=0; });
+cv.addEventListener("pointermove",e=>{ if(dragging){ finger=toLocal(e); e.preventDefault(); } },{passive:false});
+["pointerup","pointercancel","pointerleave"].forEach(t=>cv.addEventListener(t,()=>dragging=false));
+addEventListener("keydown",e=>{
+  if(!M||M.done||!playable) return;
+  const d={ArrowUp:-M.cols,ArrowDown:M.cols,ArrowLeft:-1,ArrowRight:1};
+  if(!(e.key in d)) return; e.preventDefault();
+  const want=M.cur+d[e.key]; if(neighbors(M,M.cur).includes(want)) moveTo(want);
+});
+
+/* ============================================================
+   כפתורי משחק
+   ============================================================ */
+$("#hintBtn").onclick=()=>{
+  if(!M||M.done||!playable) return;
+  const left=M.stamps.filter(s=>!s.got).map(s=>s.cell);
+  const {dist,prev}=bfs(M,M.cur);
+  let goal=M.finish,bd=Infinity;
+  (left.length?left:[M.finish]).forEach(t=>{ if(dist[t]>=0&&dist[t]<bd){bd=dist[t];goal=t;} });
+  hintPath=pathTo(prev,goal).slice(0,14); hintUntil=performance.now()+2600;
+  showCoach("הרמז מראה רק את הצעדים הקרובים");
+};
+$("#newBtn").onclick=()=>{ if(playable) newGame(); };
+$("#lvlBtn").onclick=()=>$("#introScreen").classList.add("show");
+document.querySelectorAll(".lvl").forEach(b=>b.onclick=()=>{
+  document.querySelectorAll(".lvl").forEach(x=>x.classList.remove("sel"));
+  b.classList.add("sel"); level=b.dataset.lvl;
+});
+
+/* ============================================================
+   פתיחת סשן – טלפון הוא תנאי להתחלה
+   ============================================================ */
+$("#startBtn").onclick=async ()=>{
+  const phone=$("#i-phone0").value.trim();
+  if(!mark("#f-phone0",okPhone(phone))) return;
+  if(!$("#i-ok0").checked){ flash(".consent"); return; }
+  const L=LEVELS[level];
+  session={
+    id:"lead:"+Date.now()+"-"+rnd(9999),
+    phone:phone.replace(/[\s-]/g,""), name:"", email:"",
+    level, levelName:L.name, tickets:L.tickets, prize:L.prize,
+    startedAt:new Date().toISOString(), completedAt:"", seconds:0, moves:0,
+    status:"התחיל", winner:false
+  };
+  await Store.set(session.id,session);
+  $("#introScreen").classList.remove("show");
+  playable=true;
+  newGame();
+};
+
+/* ============================================================
+   ניצחון + השלמת פרטים
+   ============================================================ */
+function win(){
+  M.done=true; dragging=false; clearInterval(timerId); burst(90);
+  $("#winStats").textContent=`⏱ ${fmtTime(elapsed)} · 👣 ${moves} צעדים · 🏛️ ${M.stamps.length} חותמות`;
+  $("#winPrize").innerHTML=`סיימתם את <strong>${LEVELS[level].name}</strong> — הפרס בשלב הזה הוא <strong>${LEVELS[level].prize}</strong> לתערוכה בתמנע.<br>נשארו עוד כמה פרטים ואתם בתוך ההגרלה על 500 הכרטיסים.`;
+  setTimeout(()=>$("#winScreen").classList.add("show"),700);
+}
+$("#toFormBtn").onclick=()=>{
+  $("#winScreen").classList.remove("show");
+  $("#i-phone2").value=session?.phone||"";
+  $("#formScreen").classList.add("show");
+};
+$("#sendBtn").onclick=async ()=>{
+  const name=$("#i-name").value.trim(), mail=$("#i-mail").value.trim(), phone=$("#i-phone2").value.trim();
+  let ok=mark("#f-name",name.length>=2);
+  ok=mark("#f-mail",okMail(mail))&&ok;
+  ok=mark("#f-phone2",okPhone(phone))&&ok;
+  if(!$("#i-ok").checked){ flash(".consent"); ok=false; }
+  if(!ok) return;
+  const btn=$("#sendBtn"); btn.disabled=true; btn.textContent="שומרים…";
+  Object.assign(session,{
+    name, email:mail, phone:phone.replace(/[\s-]/g,""),
+    completedAt:new Date().toISOString(), seconds:Math.round(elapsed), moves, status:"סיים"
+  });
+  await Store.set(session.id,session);
+  btn.disabled=false; btn.textContent="שולחים אותי להגרלה";
+  $("#thanksLine").innerHTML=`תודה ${name.split(" ")[0]}! אתם בהגרלה על <strong>${session.prize}</strong> מתוך 500 הכרטיסים לתערוכה בתמנע. הזוכים מקבלים הודעה אישית.`;
+  $("#formScreen").classList.remove("show");
+  $("#thanksScreen").classList.add("show");
+  burst(50);
+};
+$("#againBtn").onclick=()=>{ $("#thanksScreen").classList.remove("show"); $("#introScreen").classList.add("show"); };
+function flash(sel){ const e=document.querySelector(sel); e.style.color="#E8452F"; setTimeout(()=>e.style.color="",1800); }
+
+/* ============================================================
+   קונפטי
+   ============================================================ */
+function burst(n){
+  const box=$("#confetti"), colors=["#FF7A2F","#E8452F","#F5C542","#2E63C8","#FFFFFF","#5E9C3A"];
+  for(let i=0;i<n;i++){
+    const d=document.createElement("div"); d.className="conf";
+    d.style.left=rnd(100)+"vw"; d.style.top="-20px"; d.style.background=colors[rnd(colors.length)];
+    d.style.animationDuration=(1.6+Math.random()*1.6)+"s"; d.style.animationDelay=(Math.random()*.5)+"s";
+    box.appendChild(d); setTimeout(()=>d.remove(),4200);
+  }
+}
+
+/* ============================================================
+   מאגר הלידים: טבלה, בחירת זוכים, ייצוא לאקסל
+   ============================================================ */
+let LEADS=[];
+let taps=0, tapT=null;
+$("#logoTap").onclick=()=>{
+  taps++; clearTimeout(tapT); tapT=setTimeout(()=>taps=0,1200);
+  if(taps>=5){ taps=0; openAdmin(); }
+};
+if(location.hash==="#admin") setTimeout(openAdmin,400);
+
+function openAdmin(){
+  const code=prompt("קוד כניסה למאגר המשתתפים:");
+  if(code===null) return;
+  if(code!==CONFIG.ADMIN_CODE){ alert("קוד שגוי"); return; }
+  $("#adminScreen").classList.add("show");
+  loadLeads();
+}
+$("#closeAdmin").onclick=()=>$("#adminScreen").classList.remove("show");
+$("#refreshBtn").onclick=loadLeads;
+$("#q").oninput=renderTable;
+$("#filter").onchange=renderTable;
+
+async function loadLeads(){
+  $("#rows").innerHTML=`<tr><td colspan="10" class="empty">טוען…</td></tr>`;
+  LEADS=await Store.all();
+  $("#storeNote").textContent = CONFIG.SHEET_URL
+    ? "המאגר המלא נשמר בגיליון Google Sheets המחובר. הטבלה כאן מציגה את הרשומות של הדפדפן הנוכחי בלבד."
+    : (Store.ok
+      ? "הרשומות נשמרות באחסון האפליקציה ומשותפות לכל מי שנכנס למאגר עם הקוד."
+      : "אחסון קבוע לא זמין כאן — הרשומות נשמרות בזיכרון הדפדפן עד לרענון. חברו גיליון Google Sheets לפני עלייה לאוויר.");
+  renderTable();
+}
+function filtered(){
+  const q=$("#q").value.trim().toLowerCase(), f=$("#filter").value;
+  return LEADS.filter(l=>{
+    if(f==="done" && l.status!=="סיים") return false;
+    if(f==="open" && l.status==="סיים") return false;
+    if(f==="win" && !l.winner) return false;
+    if(!q) return true;
+    return [l.name,l.phone,l.email].join(" ").toLowerCase().includes(q);
+  });
+}
+function renderTable(){
+  const rows=filtered();
+  const done=LEADS.filter(l=>l.status==="סיים").length;
+  const winners=LEADS.filter(l=>l.winner);
+  const given=winners.reduce((s,l)=>s+(l.tickets||0),0);
+  $("#stats").innerHTML=`
+    <div class="stat">משתתפים<b>${LEADS.length}</b></div>
+    <div class="stat">סיימו מבוך<b>${done}</b></div>
+    <div class="stat">זוכים שנבחרו<b>${winners.length}</b></div>
+    <div class="stat">כרטיסים שחולקו<b>${given} / ${CONFIG.TOTAL_TICKETS}</b></div>
+    <div class="stat">נותרו<b>${Math.max(0,CONFIG.TOTAL_TICKETS-given)}</b></div>`;
+  if(!rows.length){ $("#rows").innerHTML=`<tr><td colspan="10" class="empty">אין רשומות להצגה</td></tr>`; return; }
+  $("#rows").innerHTML=rows.map(l=>`
+    <tr class="${l.winner?"win":""}">
+      <td><input class="wbox" type="checkbox" data-k="${l.key}" ${l.winner?"checked":""}></td>
+      <td>${esc(l.name)||"—"}</td>
+      <td dir="ltr">${esc(l.phone)}</td>
+      <td dir="ltr">${esc(l.email)||"—"}</td>
+      <td>${esc(l.levelName||"")}</td>
+      <td>${l.tickets||0}</td>
+      <td>${l.seconds?fmtTime(l.seconds):"—"}</td>
+      <td>${l.moves||0}</td>
+      <td><span class="tag ${l.status==="סיים"?"done":"open"}">${l.status}</span></td>
+      <td>${new Date(l.startedAt).toLocaleString("he-IL")}</td>
+    </tr>`).join("");
+  document.querySelectorAll(".wbox").forEach(b=>b.onchange=async e=>{
+    const lead=LEADS.find(l=>l.key===e.target.dataset.k);
+    if(!lead) return;
+    lead.winner=e.target.checked;
+    const {key,...rec}=lead;
+    await Store.set(key,rec);
+    renderTable();
+  });
+}
+const esc=s=>String(s||"").replace(/[<>&"]/g,c=>({"<":"&lt;",">":"&gt;","&":"&amp;",'"':"&quot;"}[c]));
+
+/* בחירת זוכים אקראית עד תקרת הכרטיסים */
+$("#pickBtn").onclick=async ()=>{
+  const pool=LEADS.filter(l=>l.status==="סיים" && !l.winner);
+  if(!pool.length){ alert("אין משתתפים שסיימו וטרם נבחרו"); return; }
+  let given=LEADS.filter(l=>l.winner).reduce((s,l)=>s+(l.tickets||0),0);
+  const howMany=parseInt(prompt(`כמה זוכים לבחור אקראית? (נותרו ${CONFIG.TOTAL_TICKETS-given} כרטיסים)`,"10"),10);
+  if(!howMany||howMany<1) return;
+  const shuffled=pool.sort(()=>Math.random()-.5);
+  let picked=0;
+  for(const l of shuffled){
+    if(picked>=howMany) break;
+    if(given+(l.tickets||0)>CONFIG.TOTAL_TICKETS) continue;
+    l.winner=true; given+=l.tickets||0; picked++;
+    const {key,...rec}=l; await Store.set(key,rec);
+  }
+  alert(`נבחרו ${picked} זוכים · סה"כ ${given} כרטיסים מתוך ${CONFIG.TOTAL_TICKETS}`);
+  renderTable();
+};
+
+/* ייצוא */
+const COLS=[
+  ["זוכה", l=>l.winner?"כן":""],
+  ["שם", l=>l.name],
+  ["טלפון", l=>l.phone],
+  ["אימייל", l=>l.email],
+  ["שלב", l=>l.levelName],
+  ["כרטיסים", l=>l.tickets],
+  ["זמן פתרון", l=>l.seconds?fmtTime(l.seconds):""],
+  ["צעדים", l=>l.moves],
+  ["סטטוס", l=>l.status],
+  ["תאריך התחלה", l=>l.startedAt?new Date(l.startedAt).toLocaleString("he-IL"):""],
+  ["תאריך סיום", l=>l.completedAt?new Date(l.completedAt).toLocaleString("he-IL"):""]
+];
+function table(sep){
+  const rows=filtered();
+  const head=COLS.map(c=>c[0]).join(sep);
+  const body=rows.map(l=>COLS.map(c=>{
+    let v=String(c[1](l)??"");
+    if(sep===","&&/[",\n]/.test(v)) v='"'+v.replace(/"/g,'""')+'"';
+    return v;
+  }).join(sep)).join("\n");
+  return head+"\n"+body;
+}
+$("#csvBtn").onclick=()=>{
+  const csv="\uFEFF"+table(",");
+  const blob=new Blob([csv],{type:"text/csv;charset=utf-8;"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download=`world-story-leads-${new Date().toISOString().slice(0,10)}.csv`;
+  document.body.appendChild(a); a.click();
+  setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); },1500);
+};
+$("#copyBtn").onclick=async ()=>{
+  const tsv=table("\t");
+  try{ await navigator.clipboard.writeText(tsv); alert("הטבלה הועתקה — הדביקו ישירות באקסל (Ctrl+V)"); }
+  catch(e){
+    const w=window.open("","_blank");
+    if(w){ w.document.write("<pre dir='ltr'>"+esc(tsv)+"</pre>"); }
+    else alert("ההעתקה נחסמה. השתמשו בהורדת קובץ האקסל.");
+  }
+};
+
+/* ============================================================
+   התאמה למסך + הפעלה
+   ============================================================ */
+let rz;
+addEventListener("resize",()=>{ clearTimeout(rz); rz=setTimeout(()=>{ if(M&&playable&&!M.done) newGame(); },260); });
+level="normal"; newGame(); requestAnimationFrame(loop);
+</script>
+</body>
+</html>
